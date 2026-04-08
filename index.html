@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina | Premium Business Stay</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+
+    <style>
+        :root {
+            --bg-cream: #f4f1ea;
+            --dark-bg: #0a0a0a;
+            --text-main: #1a1a1a;
+            --white: #ffffff;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-cream); color: var(--text-main); font-family: var(--font-sans); overflow-x: hidden; line-height: 1.6; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 80px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; transition: 0.3s;
+        }
+        nav.scrolled { background: rgba(244, 241, 234, 0.95); height: 70px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+
+        .logo { font-family: var(--font-serif); font-size: 1.8rem; letter-spacing: 3px; font-weight: 300; text-transform: uppercase; color: var(--white); transition: 0.3s; }
+        nav.scrolled .logo { color: var(--text-main); }
+
+        .menu-trigger { cursor: pointer; display: flex; align-items: center; gap: 10px; color: var(--white); z-index: 2100; transition: 0.3s; }
+        nav.scrolled .menu-trigger { color: var(--text-main); }
+        .burger { width: 25px; height: 1px; background: currentColor; position: relative; }
+        .burger::before { content: ''; position: absolute; width: 100%; height: 1px; background: currentColor; top: -8px; transition: 0.3s; }
+
+        /* --- EXACT HAMMENU OVERLAY (Image 4 Match) --- */
+        .ham-overlay {
+            position: fixed; top: 0; right: 0; width: 100%; height: 100vh;
+            background: var(--dark-bg); z-index: 2050; display: flex;
+            justify-content: center; align-items: center;
+            clip-path: circle(0% at 95% 5%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .ham-overlay.active { clip-path: circle(150% at 95% 5%); }
+
+        .ham-container {
+            width: 80%; max-width: 1000px; display: grid; grid-template-columns: 1.2fr 1fr;
+            color: var(--white); gap: 50px;
+        }
+        .ham-info { border-right: 1px solid #333; padding-right: 50px; }
+        .ham-info .mini-logo { font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 40px; display: block; }
+        .ham-info address { font-style: normal; font-size: 0.9rem; line-height: 2; color: #aaa; margin-bottom: 30px; }
+        .ham-socials { display: flex; gap: 15px; margin-top: 40px; }
+        .ham-socials a { color: var(--white); font-size: 1.2rem; }
+
+        .ham-links { list-style: none; }
+        .ham-links li { margin-bottom: 20px; }
+        .ham-links a { 
+            color: var(--white); text-decoration: none; font-size: 1.2rem; 
+            letter-spacing: 2px; text-transform: uppercase; font-weight: 300;
+            transition: 0.3s;
+        }
+        .ham-links a:hover { color: #888; }
+        .close-btn { position: absolute; top: 30px; right: 5%; color: var(--white); cursor: pointer; font-size: 0.8rem; letter-spacing: 2px; }
+
+        /* --- HERO ---
+        .hero {
+            height: 100vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+            url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070') center/cover;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 100px 5%; color: var(--white);
+        }
+        .hero-text h1 { font-family: var(--font-serif); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300; line-height: 1.1; max-width: 900px; } */
+
+        /* --- CONTENT SECTIONS --- */
+        section { padding: 100px 5%; }
+        .centered-intro { text-align: center; max-width: 900px; margin: 0 auto; }
+        .centered-intro h2 { font-family: var(--font-serif); font-size: 2rem; margin-bottom: 30px; font-weight: 300; line-height: 1.5; }
+
+        /* --- SERVICES GRID --- */
+        .grid-header h2 { font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 40px; }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .service-card { background: var(--white); padding-bottom: 30px; transition: 0.4s; }
+        .service-card img { width: 100%; height: 350px; object-fit: cover; margin-bottom: 20px; }
+        .service-card h3 { font-family: var(--font-serif); padding: 0 25px; margin-bottom: 10px; }
+        .service-card p { padding: 0 25px; font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .service-card a { margin-left: 25px; font-size: 0.7rem; font-weight: 600; text-decoration: underline; color: var(--text-main); letter-spacing: 1px; }
+
+        /* --- WHY CHOOSE (MULTI-COLUMN) --- */
+        .why-section { border-top: 1px solid #e0ddd7; }
+        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 50px; }
+        .why-item h4 { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 15px; }
+        .why-item p { font-size: 0.85rem; color: #555; line-height: 1.8; }
+
+    
+
+
+    /* --- CONTACT SECTION THEME --- */
+    #contact {
+        background-color: #f4f1ea; /* FARMform Cream */
+        padding: 120px 5%;
+        border-top: 1px solid #e0ddd7;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .contact-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 80px;
+        align-items: start;
+    }
+
+    /* Left Column: Typography */
+    .contact-info .section-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 300;
+        line-height: 1.1;
+        margin-bottom: 30px;
+        color: #1a1a1a;
+    }
+
+    .contact-info p {
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        color: #555;
+        max-width: 420px;
+        line-height: 1.8;
+    }
+
+    .contact-details {
+        margin-top: 50px;
+    }
+
+    .contact-details p {
+        font-size: 1.1rem;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+        font-weight: 400;
+        letter-spacing: 1px;
+    }
+
+    /* Right Column: Professional Line-Form */
+    .form-box {
+        padding: 10px 0;
+    }
+
+    .input-group {
+        margin-bottom: 45px;
+        position: relative;
+    }
+
+    .input-group input, 
+    .input-group textarea {
+        width: 100%;
+        padding: 15px 0;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        color: #1a1a1a;
+        transition: border-color 0.4s ease;
+        resize: none;
+    }
+
+    .input-group input:focus, 
+    .input-group textarea:focus {
+        outline: none;
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+    /* Submit Button - Bold & Letter-spaced */
+    .btn-submit {
+        background-color: #0a0a0a;
+        color: #ffffff;
+        padding: 22px 60px;
+        border: none;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+        background-color: #333;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .contact-container {
+            grid-template-columns: 1fr;
+            gap: 60px;
+            padding: 0 20px;
+        }
+        #contact {
+            padding: 80px 5%;
+        }
+    }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="logo">LUMINA</div>
+        <div class="menu-trigger" id="openMenu">
+            <span>MENU</span>
+            <div class="burger"></div>
+        </div>
+    </nav>
+
+    <div class="ham-overlay" id="overlay">
+        <div class="close-btn" id="closeMenu">CLOSE ✕</div>
+        <div class="ham-container">
+            <div class="ham-info">
+                <span class="mini-logo">LUMINA</span>
+                <address>
+                    Karachi Corporate Hub<br>
+                    Suite 135, Tower III<br>
+                    info@luminaresorts.com<br>
+                    +92 (0) 300 1234567
+                </address>
+                <div class="ham-socials">
+                    <a href="#">FB</a> <a href="#">IG</a> <a href="#">LN</a>
+                </div>
+            </div>
+            <ul class="ham-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Meeting Spaces</a></li>
+                <li><a href="#services">Business Events</a></li>
+                <li><a href="#about">Our Story</a></li>
+                <li><a href="#footer">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <style>
+    /* --- HERO THEME --- */
+    #home {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        background-color: #0a0a0a;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    /* * THE READABILITY SOLUTION (Part 1 of 2): Radial Gradient 
+     * This subtle dark overlay sits directly over the images.
+     * It is heaviest in the bottom-left where the text lives.
+     */
+    #home::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at bottom left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 80%);
+        z-index: 5;
+        pointer-events: none; /* Allows clicks to pass through */
+    }
+
+    /* Background Carousel */
+    .hero-carousel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 3s ease;
+        transform: scale(1.1);
+    }
+
+    .slide.active {
+        opacity: 0.8; /* Slight dimming from 1.0 to 0.8 for image contrast */
+        transform: scale(1);
+        z-index: 2;
+    }
+
+    /* Content Overlay */
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        padding: 0 8% 100px;
+        color: #ffffff;
+    }
+
+    .hero-label {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 5px; /* Architectural spacing */
+        text-transform: uppercase;
+        margin-bottom: 25px;
+        display: block;
+        opacity: 0.9;
+    }
+
+    .hero-content h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        font-weight: 300;
+        line-height: 1.05;
+        max-width: 900px;
+        margin: 0;
+        
+        /* THE READABILITY SOLUTION (Part 2 of 2): Soft Diffused Shadow */
+        text-shadow: 0 4px 30px rgba(0,0,0,0.5); 
+    }
+
+    /* Carousel Progress Indicators (Image 1 Style) */
+    .hero-controls {
+        position: absolute;
+        bottom: 50px;
+        right: 8%;
+        display: flex;
+        gap: 15px;
+        z-index: 20;
+    }
+
+    .progress-bar {
+        width: 60px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .progress-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background: #ffffff;
+        transition: width 0.1s linear;
+    }
+
+    .progress-bar.active .progress-fill {
+        width: 100%;
+        transition: width 5s linear; /* Matches slide duration */
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+        .hero-content { padding: 0 5% 80px; text-align: center; }
+        .hero-controls { left: 50%; transform: translateX(-50%); width: max-content; }
+        #home::before {
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 80%);
+        }
+    }
+</style>
+
+<section id="home">
+    <div class="hero-carousel">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1445019980597-93fa8acb246c?q=80&w=2070');"></div>
+    </div>
+
+    <div class="hero-content">
+        <span class="hero-label">Corporate Retreats • United States</span>
+        <h1>Experience a New Way<br>of Business Stay and Events.</h1>
+    </div>
+
+    <div class="hero-controls">
+        <div class="progress-bar active" onclick="goToSlide(0)"><div class="progress-fill"></div></div>
+        <div class="progress-bar" onclick="goToSlide(1)"><div class="progress-fill"></div></div>
+        <div class="progress-bar" onclick="goToSlide(2)"><div class="progress-fill"></div></div>
+    </div>
+</section>
+
+<script>
+    let currentHeroSlide = 0;
+    const heroSlides = document.querySelectorAll('.slide');
+    const heroBars = document.querySelectorAll('.progress-bar');
+    const slideDuration = 5000; // 5 seconds
+
+    function updateHeroCarousel() {
+        heroSlides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentHeroSlide);
+            heroBars[index].classList.toggle('active', index === currentHeroSlide);
+        });
+    }
+
+    function nextHeroSlide() {
+        currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+        updateHeroCarousel();
+    }
+
+    function goToSlide(index) {
+        currentHeroSlide = index;
+        updateHeroCarousel();
+        resetTimer();
+    }
+
+    let slideTimer = setInterval(nextHeroSlide, slideDuration);
+
+    function resetTimer() {
+        clearInterval(slideTimer);
+        slideTimer = setInterval(nextHeroSlide, slideDuration);
+    }
+</script>
+
+   <style>
+    /* --- THE FINAL POLISH: ASYMMETRICAL & UNIQUE --- */
+    #about-final {
+        background-color: #f4f1ea;
+        padding: 180px 10%;
+        position: relative;
+        font-family: 'Montserrat', sans-serif;
+        overflow: visible;
+    }
+
+    .about-layout {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 100px;
+        align-items: center;
+    }
+
+    /* Left Side: The "Floating" Image */
+    .about-visual {
+        position: relative;
+        height: 600px;
+        width: 100%;
+    }
+
+    .main-img {
+        width: 85%;
+        height: 100%;
+        object-fit: cover;
+        filter: sepia(20%) contrast(110%);
+        border-radius: 2px;
+    }
+
+    /* The "Missing Detail": An overlapping architectural box */
+    .floating-accent {
+        position: absolute;
+        bottom: -40px;
+        right: 0;
+        width: 250px;
+        height: 350px;
+        background: #0a0a0a;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 40px;
+        color: #f4f1ea;
+        z-index: 2;
+    }
+
+    .floating-accent h4 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        font-weight: 300;
+    }
+
+    .floating-accent p {
+        font-size: 0.75rem;
+        line-height: 2;
+        letter-spacing: 1px;
+        opacity: 0.7;
+    }
+
+    /* Right Side: Centralized text logic within the grid */
+    .about-text-content {
+        padding-left: 20px;
+    }
+
+    .kicker {
+        font-size: 0.7rem;
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        color: #c5a059;
+        margin-bottom: 30px;
+        display: block;
+    }
+
+    .about-text-content h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 300;
+        line-height: 1.1;
+        color: #1a1a1a;
+        margin-bottom: 40px;
+    }
+
+    .about-text-content p {
+        font-size: 0.95rem;
+        line-height: 2;
+        color: #555;
+        max-width: 500px;
+    }
+
+    /* Vertical Rule for "Professional Stability" */
+    .v-rule {
+        width: 1px;
+        height: 120px;
+        background: #1a1a1a;
+        margin-bottom: 40px;
+        opacity: 0.2;
+    }
+
+    @media (max-width: 992px) {
+        .about-layout { grid-template-columns: 1fr; gap: 80px; }
+        .about-visual { height: 400px; }
+        .floating-accent { display: none; } /* Simplify for mobile */
+    }
+</style>
+
+<section id="about-final">
+    <div class="about-layout">
+        
+        <div class="about-visual">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000" class="main-img" alt="Resort Architecture">
+            
+            <div class="floating-accent">
+                <h4>Engineered Serenity.</h4>
+                <p>Establishing a new benchmark for professional retreats where design meets absolute function.</p>
+            </div>
+        </div>
+
+        <div class="about-text-content">
+            <div class="v-rule"></div>
+            <span class="kicker">The Lumina Core</span>
+            
+            <h2>A sanctuary where <br><i>legacy meets</i> modern <br>productivity.</h2>
+            
+            <p>
+                At Lumina, we transformed a legacy estate into a modern venue tailored for business professionals. Here, freedom, relaxation and productivity blend seamlessly through architectural intent and silent luxury.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+    <section id="services">
+        <div class="booking-intro">
+            <span>Curated Stays</span>
+            <h2>Our Premium <br> Services</h2>
+        </div>
+        <div class="service-grid">
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000" alt="Meetings">
+                <div class="card-content">
+                    <h3>Meeting Spaces</h3>
+                    <p>Rooms designed for focus and collaboration in a peaceful setting.</p>
+                    <a href="#">READ MORE</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000" alt="Events">
+                <div class="card-content">
+                    <h3>Business Events</h3>
+                    <p>From product launches to retreats in an inspiring environment.</p>
+                    <a href="#">READ MORE</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000" alt="Stay">
+                <div class="card-content">
+                    <h3>Stay the Night</h3>
+                    <p>Contemporary rooms with all modern amenities and comfort.</p>
+                    <a href="#">READ MORE</a>
+                </div>
+            </div>
+        </div>
+    </section>
+<style>
+    /* --- PREMIUM RESORT BOOKING SECTION --- */
+    #resort-booking {
+        background-color: #f4f1ea; /* Theme Cream */
+        padding: 120px 5%;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .booking-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .booking-intro {
+        margin-bottom: 80px;
+        max-width: 700px;
+    }
+
+    .booking-intro span {
+        font-size: 0.75rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #888;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .booking-intro h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2.5rem, 5vw, 4.2rem);
+        font-weight: 300;
+        line-height: 1.1;
+        color: #1a1a1a;
+    }
+
+    /* Architectural Card Grid */
+    .resort-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    .stay-card {
+        background: #ffffff;
+        border-radius: 2px;
+        overflow: hidden;
+        transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    }
+
+    .stay-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .card-img-wrap {
+        height: 300px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 1s ease;
+    }
+
+    .stay-card:hover .card-img-wrap img {
+        transform: scale(1.05);
+    }
+
+    .card-body {
+        padding: 40px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 300;
+        margin-bottom: 15px;
+        color: #1a1a1a;
+    }
+
+    .card-body p {
+        font-size: 0.85rem;
+        line-height: 1.8;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    /* Details List */
+    .stay-details {
+        list-style: none;
+        margin-bottom: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .stay-details li {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        color: #888;
+    }
+
+    .stay-details li span {
+        color: #1a1a1a;
+        font-weight: 600;
+    }
+
+    /* Action Button */
+    .btn-reserve {
+        margin-top: auto;
+        width: 100%;
+        padding: 20px;
+        background: #1a1a1a;
+        color: #fff;
+        border: none;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-reserve:hover {
+        background: #c5a059; /* Gold accent from your theme */
+    }
+
+    @media (max-width: 768px) {
+        #resort-booking { padding: 80px 5%; }
+        .booking-intro h2 { font-size: 2.8rem; }
+    }
+</style>
+
+<section id="resort-booking">
+    <div class="booking-wrapper">
+        <div class="booking-intro">
+            <span>Curated Stays</span>
+            <h2>Accommodation & <br>Professional Suites</h2>
+        </div>
+
+        <div class="resort-grid">
+            <div class="stay-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000" alt="Executive Suite">
+                </div>
+                <div class="card-body">
+                    <h3>Executive Suite</h3>
+                    <p>Designed for the high-performance professional. Features a soundproof workspace and panoramic Karachi views.</p>
+                    <ul class="stay-details">
+                        <li>Space <span>650 sq ft</span></li>
+                        <li>Occupancy <span>2 Adults</span></li>
+                        <li>Work-station <span>Ergonomic</span></li>
+                    </ul>
+                    <button class="btn-reserve">Check Availability</button>
+                </div>
+            </div>
+
+            <div class="stay-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1000" alt="Business Loft">
+                </div>
+                <div class="card-body">
+                    <h3>Business Loft</h3>
+                    <p>A minimalist split-level sanctuary offering a separate living area for private meetings and rest.</p>
+                    <ul class="stay-details">
+                        <li>Space <span>850 sq ft</span></li>
+                        <li>Occupancy <span>2 Adults</span></li>
+                        <li>Meetings <span>Private Area</span></li>
+                    </ul>
+                    <button class="btn-reserve">Check Availability</button>
+                </div>
+            </div>
+
+            <div class="stay-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000" alt="Presidential Annex">
+                </div>
+                <div class="card-body">
+                    <h3>Presidential Annex</h3>
+                    <p>The ultimate resort experience. Includes a 10-person private boardroom and personalized 24/7 concierge.</p>
+                    <ul class="stay-details">
+                        <li>Space <span>1200 sq ft</span></li>
+                        <li>Occupancy <span>4 Adults</span></li>
+                        <li>Boardroom <span>Integrated</span></li>
+                    </ul>
+                    <button class="btn-reserve">Check Availability</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* --- REVIEWS THEME --- */
+    #reviews {
+        background-color: #f4f1ea; /* Theme Cream */
+        padding: 140px 5%;
+        border-top: 1px solid #e0ddd7;
+        overflow: hidden;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .reviews-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+    }
+
+    .reviews-header {
+        margin-bottom: 60px;
+    }
+
+    .reviews-header span {
+        font-size: 0.7rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #888;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* Carousel Wrapper */
+    .carousel-wrapper {
+        position: relative;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .review-slide {
+        position: absolute;
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .review-slide.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    /* Typography */
+    .review-quote {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.3;
+        color: #1a1a1a;
+        margin-bottom: 40px;
+    }
+
+    .review-author {
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #1a1a1a;
+    }
+
+    .review-role {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        color: #888;
+        margin-top: 5px;
+        display: block;
+    }
+
+    /* Navigation Dots */
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 50px;
+    }
+
+    .dot {
+        width: 6px;
+        height: 6px;
+        background: #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .dot.active {
+        background: #1a1a1a;
+        transform: scale(1.5);
+    }
+
+    /* Optional Architectural Icon */
+    .quote-icon {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 4rem;
+        color: #e0ddd7;
+        line-height: 0;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        #reviews { padding: 100px 5%; }
+        .review-quote { font-size: 1.5rem; }
+    }
+</style>
+
+<section id="reviews">
+    <div class="reviews-container">
+        <div class="reviews-header">
+            <span>Kind Words</span>
+        </div>
+
+        <span class="quote-icon">“</span>
+
+        <div class="carousel-wrapper">
+            <div class="review-slide active">
+                <p class="review-quote">"Lumina provides a level of professional serenity that is rare to find. Our executive retreat was flawless, from the workspace ergonomics to the serene environment."</p>
+                <div class="review-info">
+                    <span class="review-author">Sarah Jenkins</span>
+                    <span class="review-role">Director, Global Innovate</span>
+                </div>
+            </div>
+
+            <div class="review-slide">
+                <p class="review-quote">"The perfect blend of modern architectural design and high-functioning business amenities. It is truly the gold standard for luxury business stays in Karachi."</p>
+                <div class="review-info">
+                    <span class="review-author">Ahmed Raza</span>
+                    <span class="review-role">CEO, TechFlow Solutions</span>
+                </div>
+            </div>
+
+            <div class="review-slide">
+                <p class="review-quote">"Beyond the stunning design, the personalized service and attention to detail made our strategic planning sessions incredibly productive."</p>
+                <div class="review-info">
+                    <span class="review-author">Elena Rodriguez</span>
+                    <span class="review-role">VP of Operations, Venture Peak</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-dots">
+            <div class="dot active" onclick="currentSlide(0)"></div>
+            <div class="dot" onclick="currentSlide(1)"></div>
+            <div class="dot" onclick="currentSlide(2)"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+    let slideIndex = 0;
+    const slides = document.querySelectorAll('.review-slide');
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlides() {
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}
+        
+        slides[slideIndex-1].classList.add('active');
+        dots[slideIndex-1].classList.add('active');
+        
+        setTimeout(showSlides, 6000); // Change image every 6 seconds
+    }
+
+    function currentSlide(n) {
+        slideIndex = n;
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        slides[slideIndex].classList.add('active');
+        dots[slideIndex].classList.add('active');
+    }
+
+    // Initialize carousel
+    document.addEventListener('DOMContentLoaded', () => {
+        // Auto-play is handled by the setTimeout inside showSlides, 
+        // but we start the loop here.
+        setTimeout(showSlides, 6000);
+    });
+</script>
+
+<style>
+    /* --- LEADERSHIP & STAFF SECTION --- */
+    #leadership {
+        background-color: #f4f1ea; /* Theme Cream */
+        padding: 180px 10%;
+        font-family: 'Montserrat', sans-serif;
+        border-top: 1px solid #e0ddd7;
+    }
+
+    .leadership-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* --- CEO SPOTLIGHT (Asymmetrical) --- */
+    .ceo-spotlight {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 80px;
+        align-items: center;
+        margin-bottom: 150px;
+    }
+
+    .ceo-image {
+        position: relative;
+        height: 700px;
+    }
+
+    .ceo-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%);
+        transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .ceo-image:hover img {
+        filter: grayscale(0%);
+    }
+
+    /* CEO Architectural Text Overlay */
+    .ceo-details {
+        padding-left: 20px;
+    }
+
+    .ceo-label {
+        font-size: 0.7rem;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        color: #c5a059;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .ceo-details h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        font-weight: 300;
+        line-height: 1.1;
+        color: #1a1a1a;
+        margin-bottom: 30px;
+    }
+
+    .ceo-quote {
+        font-family: 'Cormorant Garamond', serif;
+        font-style: italic;
+        font-size: 1.4rem;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        position: relative;
+        padding-left: 40px;
+    }
+
+    .ceo-quote::before {
+        content: '"';
+        position: absolute;
+        left: 0;
+        top: -10px;
+        font-size: 4rem;
+        color: #e0ddd7;
+    }
+
+    .ceo-bio {
+        font-size: 0.9rem;
+        line-height: 2;
+        color: #666;
+        max-width: 450px;
+    }
+
+    /* --- STAFF GRID (Minimalist) --- */
+    .staff-section-title {
+        border-bottom: 1px solid #1a1a1a;
+        padding-bottom: 20px;
+        margin-bottom: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .staff-section-title h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.5rem;
+        font-weight: 300;
+    }
+
+    .staff-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+    }
+
+    .staff-card {
+        transition: 0.4s;
+    }
+
+    .staff-img-wrap {
+        height: 400px;
+        overflow: hidden;
+        background: #e0ddd7;
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .staff-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .staff-card:hover .staff-img-wrap img {
+        transform: scale(1.05);
+    }
+
+    .staff-info h4 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 5px;
+        color: #1a1a1a;
+    }
+
+    .staff-info span {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #888;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    /* Interactive "Expertise" Tag */
+    .expertise-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .expertise-tag {
+        font-size: 0.6rem;
+        padding: 4px 10px;
+        border: 1px solid #ddd;
+        color: #999;
+        text-transform: uppercase;
+    }
+
+    @media (max-width: 992px) {
+        .ceo-spotlight { grid-template-columns: 1fr; }
+        .ceo-image { height: 500px; }
+        #leadership { padding: 100px 5%; }
+    }
+</style>
+
+<section id="leadership">
+    <div class="leadership-wrapper">
+        
+        <div class="ceo-spotlight">
+            <div class="ceo-image">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000" alt="Chief Executive Officer">
+            </div>
+            
+            <div class="ceo-details">
+                <span class="ceo-label">Founder & Visionary</span>
+                <h2>Thomas Washington</h2>
+                <p class="ceo-quote">"Architecture is not just about buildings; it is about the silent stability we provide to those who shape the world."</p>
+                <p class="ceo-bio">
+                    With over a decade of expertise in digital engineering and visual aesthetics in Karachi, Justin founded Lumina to bridge the gap between high-performance business and serene architectural intent.
+                </p>
+            </div>
+        </div>
+
+        <div class="staff-section-title">
+            <h3>Executive Team</h3>
+            <span style="font-size: 0.7rem; letter-spacing: 2px;">EST. 2026</span>
+        </div>
+
+        <div class="staff-grid">
+            <div class="staff-card">
+                <div class="staff-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000" alt="Head of Design">
+                </div>
+                <div class="staff-info">
+                    <span>Head of Design</span>
+                    <h4>Elena Vance</h4>
+                    <div class="expertise-list">
+                        <div class="expertise-tag">Aesthetics</div>
+                        <div class="expertise-tag">UI/UX</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <div class="staff-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=1000" alt="Operations Manager">
+                </div>
+                <div class="staff-info">
+                    <span>Operations Manager</span>
+                    <h4>Marcus Thorne</h4>
+                    <div class="expertise-list">
+                        <div class="expertise-tag">Logistics</div>
+                        <div class="expertise-tag">Concierge</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <div class="staff-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000" alt="Technical Lead">
+                </div>
+                <div class="staff-info">
+                    <span>Technical Lead</span>
+                    <h4>Sofia Chen</h4>
+                    <div class="expertise-list">
+                        <div class="expertise-tag">Engineering</div>
+                        <div class="expertise-tag">SEO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+    <section class="why-section">
+        <h2 class="grid-header">Why Choose Lumina?</h2>
+        <div class="why-grid">
+            <div class="why-item">
+                <h4>Easy Access</h4>
+                <p>Strategically located near the business district while maintaining complete seclusion.</p>
+            </div>
+            <div class="why-item">
+                <h4>Privacy & Space</h4>
+                <p>Large open areas ensure your team has the space to grow and brainstorm without distractions.</p>
+            </div>
+            <div class="why-item">
+                <h4>Premium Amenities</h4>
+                <p>High-speed fiber internet and ergonomic furniture provided in every workspace.</p>
+            </div>
+            <div class="why-item">
+                <h4>Sustainability</h4>
+                <p>Eco-friendly operations and locally sourced catering for every business event.</p>
+            </div>
+        </div>
+    </section>
+
+    
+
+<section id="contact">
+    <div class="contact-container">
+        <div class="contact-info">
+            <h2 class="section-title">Begin Your <br>Stay With Us</h2>
+            <p>Contact our dedicated concierge to arrange your corporate booking or private retreat. We tailor every experience to the silent luxury of your professional requirements.</p>
+            
+            <div class="contact-details">
+                <p>+92 21 3456 789</p>
+                <p>concierge@luminaresorts.com</p>
+            </div>
+        </div>
+
+        <div class="form-box">
+            <form id="premiumInquiryForm">
+                <div class="input-group">
+                    <input type="text" placeholder="FULL NAME" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="WORK EMAIL" required>
+                </div>
+                <div class="input-group">
+                    <textarea rows="4" placeholder="BOOKING DETAILS / REQUIREMENTS" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">SUBMIT INQUIRY</button>
+            </form>
+        </div>
+    </div>
+</section>
+<style>
+    /* --- FULL-WIDTH MAP SECTION --- */
+    #map-section {
+        width: 100%;
+        height: 500px; /* Adjust height as needed */
+        background-color: #f4f1ea; /* Matching theme cream */
+        overflow: hidden;
+        border-top: 1px solid #e0ddd7;
+        border-bottom: 1px solid #e0ddd7;
+    }
+
+    /* Grayscale filter to keep the "Premium" look */
+    .google-map-container {
+        width: 100%;
+        height: 100%;
+        filter: grayscale(100%) invert(5%) contrast(90%); 
+        transition: filter 0.5s ease;
+    }
+
+    /* Reveals color when the user interacts with it */
+    .google-map-container:hover {
+        filter: grayscale(0%) invert(0%) contrast(100%);
+    }
+
+    .google-map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+</style>
+
+<section id="map-section">
+    <div class="google-map-container">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28945.3663673738!2d67.0450!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e066ee01b83%3A0xad2cdca9a93c272!2sKarachi%2C%20Pakistan!5e0!3m2!1sen!2s!4v1712595000000!5m2!1sen!2s" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</section>
+    <style>
+    :root {
+        --footer-bg: #111111;
+        --footer-text: #ffffff;
+        --footer-muted: #888888;
+        --accent-serif: 'Cormorant Garamond', serif;
+        --main-sans: 'Montserrat', sans-serif;
+    }
+
+    footer {
+        background-color: var(--footer-bg);
+        color: var(--footer-text);
+        padding: 100px 8% 40px;
+        font-family: var(--main-sans);
+    }
+
+    .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* --- Newsletter / Top Section --- */
+    .footer-top {
+        text-align: center;
+        margin-bottom: 100px;
+    }
+
+    .footer-top span {
+        font-size: 0.7rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--footer-muted);
+        display: block;
+        margin-bottom: 25px;
+    }
+
+    .footer-top h2 {
+        font-family: var(--accent-serif);
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 300;
+        line-height: 1.2;
+        max-width: 800px;
+        margin: 0 auto 50px;
+    }
+
+    /* Rounded Newsletter Input */
+    .newsletter-form {
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .input-wrapper {
+        display: flex;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50px;
+        padding: 5px 5px 5px 25px;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .input-wrapper input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        outline: none;
+    }
+
+    .submit-btn {
+        background: white;
+        color: black;
+        border: none;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+    }
+
+    .submit-btn:hover { transform: scale(1.05); }
+
+    .privacy-check {
+        margin-top: 20px;
+        font-size: 0.65rem;
+        color: var(--footer-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .privacy-check a { color: white; text-decoration: underline; }
+
+    /* --- Bottom Grid / Info --- */
+    .footer-main {
+        display: grid;
+        grid-template-columns: 1fr 1px 1fr;
+        gap: 60px;
+        align-items: start;
+        padding-bottom: 80px;
+    }
+
+    .footer-col-left {
+        text-align: left;
+    }
+
+    .footer-info-text {
+        font-size: 0.85rem;
+        line-height: 2;
+        letter-spacing: 0.5px;
+        margin-bottom: 30px;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .social-link {
+        width: 35px;
+        height: 35px;
+        background: white;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: black;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    /* Vertical Divider */
+    .v-line {
+        background-color: rgba(255,255,255,0.2);
+        height: 200px;
+    }
+
+    /* Links Column */
+    .footer-links {
+        list-style: none;
+        padding-left: 20px;
+    }
+
+    .footer-links li { margin-bottom: 15px; }
+
+    .footer-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 500;
+        transition: opacity 0.3s;
+    }
+
+    .footer-links a:hover { opacity: 0.6; }
+
+    /* --- Copyright Bar --- */
+    .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,0.05);
+        padding-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.6rem;
+        letter-spacing: 1px;
+        color: var(--footer-muted);
+        text-transform: uppercase;
+    }
+
+    .footer-bottom a { color: var(--footer-muted); text-decoration: none; margin-left: 15px; }
+
+    @media (max-width: 768px) {
+        .footer-main {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+        .v-line { display: none; }
+        .footer-col-left, .footer-links { text-align: center; padding: 0; }
+        .social-icons { justify-content: center; }
+        .footer-bottom { flex-direction: column; gap: 20px; align-items: center; }
+    }
+</style>
+
+<footer>
+    <div class="footer-container">
+        
+        <div class="footer-top">
+            <span>Join Our Community</span>
+            <h2>Be the first to experience Lumina — where work meets comfort. Get inspiration and updates.</h2>
+            
+            <div class="newsletter-form">
+                <div class="input-wrapper">
+                    <input type="email" placeholder="EMAIL">
+                    <button class="submit-btn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+                <div class="privacy-check">
+                    <input type="checkbox" id="privacy">
+                    <label for="privacy">I agree to the <a href="#">Privacy Policy</a></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-main">
+            <div class="footer-col-left">
+                <div class="footer-info-text">
+                    LUMINA RESORTS LA MAMA BV<br>
+                    Karachi Corporate Sector 135<br>
+                    VAT: BE 0742576075<br><br>
+                    info@luminaresorts.com<br>
+                    T: +92 (0) 300 1234567
+                </div>
+                <div class="social-icons">
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">ig</a>
+                    <a href="#" class="social-link">in</a>
+                </div>
+            </div>
+
+            <div class="v-line"></div>
+
+            <ul class="footer-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Meeting Spaces</a></li>
+                <li><a href="#">Business Events</a></li>
+                <li><a href="#">Stay the Night</a></li>
+                <li><a href="#">Our Story</a></li>
+                <li><a href="#">Practical Info</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-bottom">
+            <div>ALL RIGHTS RESERVED LUMINA® • <a href="#">PRIVACY POLICY</a></div>
+            <div>CODE & DESIGN • <strong>JUSTIN IS ALIVE</strong></div>
+        </div>
+
+    </div>
+</footer>
+
+    <script>
+        const openBtn = document.getElementById('openMenu');
+        const closeBtn = document.getElementById('closeMenu');
+        const overlay = document.getElementById('overlay');
+        const navLinks = document.querySelectorAll('.ham-links a');
+
+        // Toggle Menu
+        openBtn.addEventListener('click', () => overlay.classList.add('active'));
+        closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+
+        // Close on link click
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.getAttribute('href');
+                overlay.classList.remove('active');
+                
+                gsap.to(window, {
+                    duration: 1.2,
+                    scrollTo: target,
+                    ease: "power3.inOut"
+                });
+            });
+        });
+
+        // Navbar Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
