@@ -1975,7 +1975,112 @@
 
         </div>
     </footer>
+<style>
+    :root {
+        --scroll-btn-size: 50px;
+        --scroll-btn-bottom: 30px;
+        --scroll-btn-right: 30px;
+    }
 
+    #scrollTopBtn {
+        position: fixed;
+        bottom: var(--scroll-btn-bottom);
+        right: var(--scroll-btn-right);
+        width: var(--scroll-btn-size);
+        height: var(--scroll-btn-size);
+        background-color: #1a1a1a; /* Dark for visibility */
+        color: #f4f1ea; /* Cream icon */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        /* Entrance Animation Stats */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(30px) scale(0.8);
+        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    /* Logic for showing button */
+    #scrollTopBtn.is-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+
+    #scrollTopBtn:hover {
+        background-color: #c5a059; /* Gold accent */
+        color: #1a1a1a;
+        transform: translateY(-5px);
+    }
+
+    #scrollTopBtn svg {
+        width: 20px;
+        height: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    /* --- MOBILE RESPONSIVE TWEAKS --- */
+    @media (max-width: 768px) {
+        :root {
+            --scroll-btn-size: 45px; /* Slightly smaller for mobile */
+            --scroll-btn-bottom: 20px; /* Closer to edge */
+            --scroll-btn-right: 20px;
+        }
+        
+        /* Ensure it doesn't have hover effects on touch devices to avoid "sticky" colors */
+        #scrollTopBtn:hover {
+            transform: translateY(0);
+        }
+        
+        #scrollTopBtn:active {
+            background-color: #c5a059;
+            transform: scale(0.9);
+        }
+    }
+</style>
+
+<button id="scrollTopBtn" onclick="executeScroll()" aria-label="Back to Top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+</button>
+
+<script>
+    (function() {
+        const btn = document.getElementById("scrollTopBtn");
+        const scrollThreshold = 600; // Pixels to scroll before showing
+
+        // Function to toggle visibility
+        const toggleScrollBtn = () => {
+            if (window.scrollY > scrollThreshold) {
+                btn.classList.add("is-visible");
+            } else {
+                btn.classList.remove("is-visible");
+            }
+        };
+
+        // Smooth scroll implementation
+        window.executeScroll = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        };
+
+        // Throttled scroll listener for better performance
+        let isScrolling;
+        window.addEventListener('scroll', () => {
+            window.clearTimeout(isScrolling);
+            isScrolling = setTimeout(toggleScrollBtn, 50);
+        }, false);
+    })();
+</script>
     <script>
         const openBtn = document.getElementById('openMenu');
         const closeBtn = document.getElementById('closeMenu');
